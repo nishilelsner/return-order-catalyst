@@ -49,6 +49,7 @@ export const IndexPage = () => {
       (r) =>
         r.returnedItem.toLowerCase().includes(kw) ||
         r.customer.toLowerCase().includes(kw) ||
+        (r.email && r.email.toLowerCase().includes(kw)) ||
         String(r.orderId).includes(kw) ||
         String(r.id).includes(kw)
     );
@@ -83,16 +84,38 @@ export const IndexPage = () => {
     {
       header: "Customer",
       hash: "customer",
-      render: ({ customer }) => (
-        <Link href="#" target="_blank">
-          {customer}
-        </Link>
+      render: ({ customer, email }) => (
+        <Box>
+          <Link href="#" target="_blank">
+            {customer}
+          </Link>
+          <Text color="secondary60" small>{email}</Text>
+        </Box>
       ),
     },
     {
       header: "Date",
       hash: "date",
       render: ({ date }) => <Text>{date}</Text>,
+    },
+    {
+      header: "Order Status",
+      hash: "orderStatus",
+      render: ({ orderStatus }) => (
+        <Text bold color={orderStatus === "Shipped" ? "primary" : "success"}>
+          {orderStatus}
+        </Text>
+      ),
+    },
+    {
+      header: "Total",
+      hash: "totalIncTax",
+      render: ({ totalIncTax, currencyCode }) => (
+        <Text>
+          {currencyCode === "INR" ? "₹" : "$"}
+          {parseFloat(totalIncTax).toFixed(2)}
+        </Text>
+      ),
     },
     {
       header: "Status",
